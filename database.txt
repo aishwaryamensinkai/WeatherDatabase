@@ -1,0 +1,38 @@
+-- To reduce the size of the password field and policy field
+SHOW VARIABLES LIKE 'validate_password%';
+SET GLOBAL validate_password.policy = LOW;
+SET GLOBAL validate_password.length = 6;
+
+
+DROP USER 'sss_assignment_sep24'@'localhost';
+
+-- To create DATABASE
+CREATE DATABASE weather_app;
+
+-- Create the user using the provided credentials
+CREATE USER 'sss_assignment_sep24'@'localhost' IDENTIFIED BY 'doitnow';
+
+-- Grant all privileges on the database to the user
+GRANT ALL PRIVILEGES ON weather_app.* TO 'sss_assignment_sep24'@'localhost';
+
+-- Switch to the new database
+USE weather_app;
+
+-- Create the tables as specified
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE,
+    password VARCHAR(255)
+);
+
+CREATE TABLE search_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    location VARCHAR(100),
+    weather_data TEXT,
+    timestamp DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Apply the changes
+FLUSH PRIVILEGES;
